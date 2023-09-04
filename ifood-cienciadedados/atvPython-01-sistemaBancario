@@ -1,0 +1,46 @@
+saldo = 0
+limite = 500
+extrato = ""
+numero_saques = 0
+limite_saques = 3
+
+while True:
+    print("\nMenu:")
+    print("[d] Depositar")
+    print("[s] Sacar")
+    print("[e] Extrato")
+    print("[q] Sair")
+
+    opcao = input("Selecione a opção desejada: ")
+
+    if opcao == 'd':
+        valor_deposito = float(input("Informe o valor do depósito: "))
+        if valor_deposito > 0:
+            saldo += valor_deposito
+            extrato += f"Depósito: R$ {valor_deposito:.2f}\n"
+        else:
+            print("Operação falhou: Valor de depósito inválido. Deve ser positivo.")
+
+    elif opcao == 's':
+        if numero_saques < limite_saques:
+            valor_saque = float(input("Digite o valor do saque: "))
+            if valor_saque > 0 and valor_saque <= limite and valor_saque <= saldo:
+                saldo -= valor_saque
+                extrato += f"Saque: R$ {valor_saque:.2f}\n"
+                numero_saques += 1
+            else:
+                print("Operação falhou: Valor de saque inválido ou saldo insuficiente.")
+        else:
+            print("Operação falhou: Você atingiu o limite de saques diários.")
+
+    elif opcao == 'e':
+        print("\nExtrato:")
+        print(extrato)
+        print(f"Saldo atual: R$ {saldo:.2f}")
+
+    elif opcao == 'q':
+        print("Saindo do sistema. Obrigado por utilizar nosso banco.")
+        break
+
+    else:
+        print("Operação inválida. Por favor, selecione novamente a opção desejada.")
