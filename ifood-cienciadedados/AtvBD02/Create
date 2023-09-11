@@ -1,0 +1,49 @@
+-- Criação das tabelas
+
+-- Tabela de Clientes
+CREATE TABLE Cliente (
+    ClienteID INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Email VARCHAR(100),
+    Telefone VARCHAR(20)
+);
+
+-- Tabela de Veículos
+CREATE TABLE Veiculo (
+    VeiculoID INT PRIMARY KEY,
+    Marca VARCHAR(50),
+    Modelo VARCHAR(50),
+    Ano INT
+);
+
+-- Tabela de Serviços
+CREATE TABLE Servico (
+    ServicoID INT PRIMARY KEY,
+    Descricao VARCHAR(100),
+    Preco DECIMAL(10, 2)
+);
+
+-- Tabela de Ordens de Serviço
+CREATE TABLE OrdemServico (
+    OrdemServicoID INT PRIMARY KEY,
+    ClienteID INT,
+    VeiculoID INT,
+    DataEntrada DATE,
+    DataConclusao DATE,
+    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID),
+    FOREIGN KEY (VeiculoID) REFERENCES Veiculo(VeiculoID)
+);
+
+-- Tabela de Serviços Realizados
+CREATE TABLE ServicoRealizado (
+    ServicoRealizadoID INT PRIMARY KEY,
+    OrdemServicoID INT,
+    ServicoID INT,
+    Quantidade INT,
+    FOREIGN KEY (OrdemServicoID) REFERENCES OrdemServico(OrdemServicoID),
+    FOREIGN KEY (ServicoID) REFERENCES Servico(ServicoID)
+);
+
+-- Adicione aqui as tabelas e colunas adicionais conforme a modelagem da oficina
+
+-- Fim da criação das tabelas
