@@ -1,0 +1,28 @@
+-- Recuperação simples de todos os pedidos
+SELECT * FROM Pedido;
+
+-- Recuperação de pedidos com status 'Processando'
+SELECT * FROM Pedido WHERE Status = 'Processando';
+
+-- Cálculo do valor total de um pedido
+SELECT IdPedido, SUM(Quantidade * PrecoUnitario) AS ValorTotal
+FROM Produto_has_Pedido
+GROUP BY IdPedido;
+
+-- Lista de pedidos por cliente, ordenados por data
+SELECT IdPedido, Cliente_idCliente, DataPedido
+FROM Pedido
+ORDER BY DataPedido;
+
+-- Clientes que fizeram mais de 3 pedidos
+SELECT Cliente_idCliente, COUNT(IdPedido) AS TotalPedidos
+FROM Pedido
+GROUP BY Cliente_idCliente
+HAVING COUNT(IdPedido) > 3;
+
+-- Relação de produtos, fornecedores e estoques
+SELECT p.Nome AS NomeProduto, f.Nome AS NomeFornecedor, e.Local AS LocalEstoque
+FROM Produto_has_fornecedor AS pf
+INNER JOIN Fornecedor AS f ON pf.Fornecedor_idFornecedor = f.IdFornecedor
+INNER JOIN Em_estoque AS e ON pf.Produto_idProduto = e.Produto_idProduto
+INNER JOIN Produto AS p ON pf.Produto_idProduto = p.IdProduto;
