@@ -1,0 +1,71 @@
+-- Cria o banco de dados
+CREATE DATABASE e-commerce;
+
+-- Usa o banco de dados
+USE e-commerce;
+
+-- Cria a tabela Cliente
+CREATE TABLE cliente (
+  idCliente INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(255) NOT NULL,
+  cpfOuCnpj VARCHAR(14) NOT NULL,
+  tipoPessoa ENUM('PF', 'PJ') NOT NULL,
+  PRIMARY KEY (idCliente)
+);
+
+-- Cria a tabela Pedido
+CREATE TABLE pedido (
+  idPedido INT NOT NULL AUTO_INCREMENT,
+  idCliente INT NOT NULL,
+  dataPedido DATETIME NOT NULL,
+  status ENUM('ABERTO', 'PROCESSANDO', 'ENTREGUE', 'CANCELADO') NOT NULL,
+  PRIMARY KEY (idPedido),
+  FOREIGN KEY (idCliente) REFERENCES cliente (idCliente)
+);
+
+-- Cria a tabela Produto
+CREATE TABLE produto (
+  idProduto INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(255) NOT NULL,
+  descricao TEXT,
+  valor FLOAT NOT NULL,
+  quantidade INT NOT NULL,
+  PRIMARY KEY (idProduto)
+);
+
+-- Cria a tabela Fornecedor
+CREATE TABLE fornecedor (
+  idFornecedor INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(255) NOT NULL,
+  CNPJ VARCHAR(14) NOT NULL,
+  PRIMARY KEY (idFornecedor)
+);
+
+-- Cria a tabela Pagamento
+CREATE TABLE pagamento (
+  idPagamento INT NOT NULL AUTO_INCREMENT,
+  idPedido INT NOT NULL,
+  formaPagamento ENUM('CARTÃO DE CRÉDITO', 'BOLETO BANCÁRIO', 'PIX') NOT NULL,
+  valor FLOAT NOT NULL,
+  PRIMARY KEY (idPagamento),
+  FOREIGN KEY (idPedido) REFERENCES pedido (idPedido)
+);
+
+-- Cria a tabela Entrega
+CREATE TABLE entrega (
+  idEntrega INT NOT NULL AUTO_INCREMENT,
+  idPedido INT NOT NULL,
+  status ENUM('EM TRANSITO', 'ENTREGUE', 'CANCELADO') NOT NULL,
+  codigoRastreio VARCHAR(45),
+  PRIMARY KEY (idEntrega),
+  FOREIGN KEY (idPedido) REFERENCES pedido (idPedido)
+);
+
+-- Cria a tabela Estoque
+CREATE TABLE estoque (
+  idEstoque INT NOT NULL AUTO_INCREMENT,
+  idProduto INT NOT NULL,
+  local VARCHAR(45) NOT NULL,
+  PRIMARY KEY (idEstoque),
+  FOREIGN KEY (idProduto) REFERENCES produto (idProduto)
+);
