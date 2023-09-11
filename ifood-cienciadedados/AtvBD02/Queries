@@ -1,0 +1,34 @@
+-- Consulta 1: Recuperar todos os clientes da oficina
+SELECT * FROM Cliente;
+
+-- Consulta 2: Recuperar veículos fabricados após o ano de 2010
+SELECT * FROM Veiculo WHERE Ano > 2010;
+
+-- Consulta 3: Calcular o custo total de serviços realizados em cada ordem de serviço
+SELECT OrdemServico.OrdemServicoID, SUM(Servico.Preco * ServicoRealizado.Quantidade) AS CustoTotal
+FROM OrdemServico
+INNER JOIN ServicoRealizado ON OrdemServico.OrdemServicoID = ServicoRealizado.OrdemServicoID
+INNER JOIN Servico ON ServicoRealizado.ServicoID = Servico.ServicoID
+GROUP BY OrdemServico.OrdemServicoID;
+
+-- Consulta 4: Listar ordens de serviço em aberto
+SELECT * FROM OrdemServico WHERE DataConclusao IS NULL;
+
+-- Consulta 5: Encontrar os clientes que gastaram mais de R$ 1000 em serviços
+SELECT Cliente.ClienteID, Cliente.Nome, SUM(Servico.Preco * ServicoRealizado.Quantidade) AS GastoTotal
+FROM Cliente
+INNER JOIN OrdemServico ON Cliente.ClienteID = OrdemServico.ClienteID
+INNER JOIN ServicoRealizado ON OrdemServico.OrdemServicoID = ServicoRealizado.OrdemServicoID
+INNER JOIN Servico ON ServicoRealizado.ServicoID = Servico.ServicoID
+GROUP BY Cliente.ClienteID, Cliente.Nome
+HAVING GastoTotal > 1000;
+
+-- Consulta 6: Relação de serviços realizados em cada ordem de serviço
+SELECT OrdemServico.OrdemServicoID, Servico.Descricao
+FROM OrdemServico
+INNER JOIN ServicoRealizado ON OrdemServico.OrdemServicoID = ServicoRealizado.OrdemServicoID
+INNER JOIN Servico ON ServicoRealizado.ServicoID = Servico.ServicoID;
+
+-- Adicione aqui consultas adicionais com descrições de acordo com suas necessidades
+
+-- Fim das consultas
